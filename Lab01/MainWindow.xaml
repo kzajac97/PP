@@ -15,8 +15,9 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Path=Name}" Width="100"/>
-                        <TextBlock Text="{Binding Path=Age}" Width="100"/>
+                        <TextBlock Text="{Binding Path=Name}" Width="50"/>
+                        <TextBlock Text="{Binding Path=Age}" Width="50"/>
+                        <Image Source="{Binding Path=Picture}" Width="50"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -26,7 +27,10 @@
             <TextBox Name ="nameTextBox" Height="23" TextWrapping="Wrap" Text="Jarosław" Margin="0,0,0,10"/>
             <TextBlock TextWrapping="Wrap" Text="Age"/>
             <TextBox Name="ageTextBox" Height="23" TextWrapping="Wrap" Text="99"  Margin="0,0,0,10"/>
+            <Image Name="photoPreview" Height="150" Width="150"/>
+            <Button Name = "addNewPhoto" Content="Add photo" Click="AddNewPhoto_Click" Margin="0,0,0,10" Width="150"/>
             <Button Name = "addNewPersonButton" Content="Add new person" Click="AddNewPersonButton_Click"/>
+            
         </StackPanel>
     </Grid>
 </Window>
