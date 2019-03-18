@@ -1,21 +1,16 @@
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Net.Http;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Linq;
+using System.IO;
 
 namespace Lab01
 {
@@ -31,10 +26,7 @@ namespace Lab01
             new Person { Name = "P2", Age = 2 }
         };
 
-        public ObservableCollection<Person> Items
-        {
-            get => people;
-        }
+        public ObservableCollection<Person> Items => people;
 
         public MainWindow()
         {
@@ -48,20 +40,65 @@ namespace Lab01
             {
                 people.Add(new Person { Age = age, Name = nameTextBox.Text, Picture = (BitmapImage) photoPreview.Source});
             }
+
             else
-            { ageTextBox.Text = "Age must be a number"; }
+            {
+                MessageBox.Show("Age must be a number");
+            }
         }
 
         private void AddNewPhoto_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Title = "Select a photo";
-            if(fileDialog.ShowDialog() == true)
+            OpenFileDialog fileDialog = new OpenFileDialog { Title = "Select a photo" };
+
+            if (fileDialog.ShowDialog() == true)
             {
                 photoPreview.Source = new BitmapImage(new Uri(fileDialog.FileName));
                 imagePath = fileDialog.FileName;
             }
         }
 
+        private async void AddNewPersonFromWeb_Click(object sender, RoutedEventArgs e)
+        {
+            Random random = new Random();
+            BitmapImage image = new BitmapImage();
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = await client.GetAsync("http://www.contoso.com");
+                    response.EnsureSuccessStatusCode();
+
+                    string name = await response.Content.ReadAsStringAsync();
+
+                    name = new string((from c in name where char.IsWhiteSpace(c) || char.IsLetter(c) select c).ToArray());
+
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(stream);
+                        image.BeginInit();
+                        image.StreamSource = stream;
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.EndInit();
+                    }
+
+                    people.Add(new Person { Age = random.Next(1, 100), Name = name, Picture = image });
+                }
+            }
+
+            catch(Exception ex)
+            {
+                if (ex is HttpRequestException)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                
+                else
+                {
+                    MessageBox.Show("Unkown Exception caught");
+                }
+            }
+        }
     }
 }

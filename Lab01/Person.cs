@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Windows.Media.Imaging;
 
 namespace Lab01
-{
+{   
     public class Person
     {
         public string Name { get; set; }

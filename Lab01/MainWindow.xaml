@@ -1,4 +1,4 @@
-﻿<Window x:Class="Lab01.MainWindow"
+<Window x:Class="Lab01.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -29,8 +29,8 @@
             <TextBox Name="ageTextBox" Height="23" TextWrapping="Wrap" Text="99"  Margin="0,0,0,10"/>
             <Image Name="photoPreview" Height="150" Width="150"/>
             <Button Name = "addNewPhoto" Content="Add photo" Click="AddNewPhoto_Click" Margin="0,0,0,10" Width="150"/>
-            <Button Name = "addNewPersonButton" Content="Add new person" Click="AddNewPersonButton_Click"/>
-            
+            <Button Name = "addNewPersonButton" Content="Add new person" Click="AddNewPersonButton_Click" Margin="0,0,0,10" Width="150"/>
+            <Button Name =  "addNewPersonFromWeb" Content="Add new person from web" Click="AddNewPersonFromWeb_Click" Width="150"/>
         </StackPanel>
     </Grid>
 </Window>
