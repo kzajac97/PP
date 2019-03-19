@@ -11,6 +11,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.IO;
+using System.Timers;
 
 namespace Lab01
 {
@@ -19,8 +20,12 @@ namespace Lab01
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// path to person image file
+        /// </summary>
         string imagePath;
-        ObservableCollection<Person> people = new ObservableCollection<Person>
+
+        static ObservableCollection<Person> people = new ObservableCollection<Person>
         {
             new Person { Name = "P1", Age = 1 },
             new Person { Name = "P2", Age = 2 }
@@ -33,7 +38,38 @@ namespace Lab01
             InitializeComponent();
             DataContext = this;
         }
-        
+
+        private async void AddNewPersonFromWeb()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    string result = await client.GetStringAsync("https://en.wikipedia.org/wiki/Main_Page");
+                    string name = Regex.Match(result, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;
+                    string ageString = Regex.Match(result, "[0-9]+").Value;
+                    Trace.WriteLine(ageString);
+                    if (int.TryParse(ageString, out int age))
+                    { people.Add(new Person { Age = age, Name = name }); }
+                    else
+                    { MessageBox.Show("Age must be number"); }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                if (ex is HttpRequestException)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                else
+                {
+                    MessageBox.Show("Unkown Exception caught");
+                }
+            }
+        }
+
         private void AddNewPersonButton_Click(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(ageTextBox.Text, out int age))
@@ -58,47 +94,9 @@ namespace Lab01
             }
         }
 
-        private async void AddNewPersonFromWeb_Click(object sender, RoutedEventArgs e)
+        private void AddNewPersonFromWeb_Click(object sender, RoutedEventArgs e)
         {
-            Random random = new Random();
-            BitmapImage image = new BitmapImage();
-
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    HttpResponseMessage response = await client.GetAsync("http://www.contoso.com");
-                    response.EnsureSuccessStatusCode();
-
-                    string name = await response.Content.ReadAsStringAsync();
-
-                    name = new string((from c in name where char.IsWhiteSpace(c) || char.IsLetter(c) select c).ToArray());
-
-                    using (MemoryStream stream = new MemoryStream())
-                    {
-                        await stream.CopyToAsync(stream);
-                        image.BeginInit();
-                        image.StreamSource = stream;
-                        image.CacheOption = BitmapCacheOption.OnLoad;
-                        image.EndInit();
-                    }
-
-                    people.Add(new Person { Age = random.Next(1, 100), Name = name, Picture = image });
-                }
-            }
-
-            catch(Exception ex)
-            {
-                if (ex is HttpRequestException)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                
-                else
-                {
-                    MessageBox.Show("Unkown Exception caught");
-                }
-            }
+            AddNewPersonFromWeb();
         }
     }
 }
