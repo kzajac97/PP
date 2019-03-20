@@ -38,9 +38,10 @@ namespace Lab01
             InitializeComponent();
             DataContext = this;
 
-            RunPeriodically(OnTick, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+            RunPeriodically(OnTick, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5)).ContinueWith(task => { }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        
         private async void AddNewPersonFromWeb()
         {
             try
@@ -50,10 +51,16 @@ namespace Lab01
                     string result = await client.GetStringAsync("https://en.wikipedia.org/wiki/Main_Page");
                     string name = Regex.Match(result, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;
                     string ageString = Regex.Match(result, "[0-9]+").Value;
+
                     if (int.TryParse(ageString, out int age))
-                    { people.Add(new Person { Age = age, Name = name }); }
+                    {
+                        people.Add(new Person { Age = age, Name = name });
+                    }
+
                     else
-                    { MessageBox.Show("Age must be number"); }
+                    {
+                        MessageBox.Show("Age must be number");
+                    }
                 }
             }
 
@@ -95,12 +102,9 @@ namespace Lab01
             }
         }
 
-        private void AddNewPersonFromWeb_Click(object sender, RoutedEventArgs e)
-        {
-            AddNewPersonFromWeb();
-        }
+        private void AddNewPersonFromWeb_Click(object sender, RoutedEventArgs e) => AddNewPersonFromWeb();
 
-        private static async Task RunPeriodically(Action OnTick, TimeSpan dueTime, TimeSpan interval)
+        private async Task RunPeriodically(Action OnTick, TimeSpan dueTime, TimeSpan interval)
         {
             if(dueTime > TimeSpan.Zero)
             {
@@ -118,9 +122,6 @@ namespace Lab01
             }
         }
 
-        private void OnTick()
-        {
-            AddNewPersonFromWeb();
-        }
+        private void OnTick() => AddNewPersonFromWeb();
     }
 }
