@@ -31,6 +31,25 @@
             <Button Name = "addNewPhoto" Content="Add photo" Click="AddNewPhoto_Click" Margin="0,0,0,10" Width="150"/>
             <Button Name = "addNewPersonButton" Content="Add new person" Click="AddNewPersonButton_Click" Margin="0,0,0,10" Width="150"/>
             <Button Name =  "addNewPersonFromWeb" Content="Add new person from web" Click="AddNewPersonFromWeb_Click" Width="150"/>
+            <Grid Height="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button Content="Perform stupid calculations" Grid.Column="1" Margin="5" Grid.Row="0" Grid.RowSpan="2" Click="Button_Click"/>
+                <TextBlock Text="Final number" Grid.Column="0" Grid.Row="0" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Bottom"></TextBlock>
+                <TextBox x:Name="finalNumberTextBox" Text="0" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top"></TextBox>
+            </Grid>
+            <TextBlock x:Name="progressTextBlock" TextWrapping="Wrap" Text=""/>
+            <TextBlock x:Name="progressTextBlock2" TextWrapping="Wrap" Text=""/>
+            <Button x:Name="weatherDataButton" Content="Load the weather data from the known locations" Click="LoadWeatherData"/>
+            <ProgressBar x:Name="weatherDataProgressBar" Height="20"/>
+            <TextBlock x:Name="weatherDataTextBlock" />
+            <Button Content="CANCEL" Click="Button_Click_1"/>
         </StackPanel>
     </Grid>
 </Window>
