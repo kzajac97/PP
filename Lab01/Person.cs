@@ -11,7 +11,7 @@ namespace Lab01
     public class Person
     {
         public string Name { get; set; }
-        public int Age { get; set; }
+        public float Age { get; set; }
         public BitmapImage Picture { get; set; }
     }
 }

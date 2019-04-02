@@ -58,3 +58,7 @@ E:\Michal Biblioteki\Dokumenty\Net_java\PP\Lab01\obj\Debug\Lab01.g.resources
 E:\Michal Biblioteki\Dokumenty\Net_java\PP\Lab01\obj\Debug\Lab01.Properties.Resources.resources
 E:\Michal Biblioteki\Dokumenty\Net_java\PP\Lab01\obj\Debug\Lab01.csproj.GenerateResource.cache
 E:\Michal Biblioteki\Dokumenty\Net_java\PP\Lab01\obj\Debug\Lab01.csproj.CoreCompileInputs.cache
+E:\Michal Biblioteki\Dokumenty\Net_java\PP\Lab01\bin\Debug\Newtonsoft.Json.dll
+E:\Michal Biblioteki\Dokumenty\Net_java\PP\Lab01\bin\Debug\Newtonsoft.Json.pdb
+E:\Michal Biblioteki\Dokumenty\Net_java\PP\Lab01\bin\Debug\Newtonsoft.Json.xml
+E:\Michal Biblioteki\Dokumenty\Net_java\PP\Lab01\obj\Debug\Lab01.csproj.CopyComplete

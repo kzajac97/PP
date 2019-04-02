@@ -134,9 +134,10 @@ namespace Lab01
         {
             try
             {        
-                string result = await Client.GetStringAsync("https://en.wikipedia.org/wiki/Main_Page");
+                string result = await Client.GetStringAsync("https://pl.wikipedia.org/wiki/Specjalna:Losowa_strona");
 
                 string name = Regex.Match(result, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;
+                name = name.Replace(" – Wikipedia, wolna encyklopedia", "");
                 string ageString = Regex.Match(result, "[0-9]+").Value;
                 
                 if (int.TryParse(ageString, out int age))
@@ -364,6 +365,32 @@ namespace Lab01
                 weatherDataTextBlock.Text = "Cancelling...";
                 worker.CancelAsync();
             }
+        }
+
+        private async void AddCatFact_Click(object sender, RoutedEventArgs e)
+        {
+            string apiUrl = "https://cat-fact.herokuapp.com/facts/random";
+            string response = await APIConnection.LoadDataAsync(apiUrl);
+            WeatherDataEntry result = JSONParser.ParseJSON(response, apiUrl);
+            Items.Add(new Person()
+            {
+                Name = result.City,
+                Age = 0
+            });
+           
+        }
+
+        private async void AddBitcoinValue_Click(object sender, RoutedEventArgs e)
+        {
+            string apiUrl = "https://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d";
+            string response = await APIConnection.LoadDataAsync(apiUrl);
+            WeatherDataEntry result = JSONParser.ParseJSON(response,apiUrl);
+            Items.Add(new Person()
+            {
+                Name = result.City,
+                Age = result.Temperature
+            });
+
         }
     }
 }

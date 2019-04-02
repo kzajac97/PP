@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab01"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="1000" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -15,9 +15,9 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Path=Name}" Width="50"/>
-                        <TextBlock Text="{Binding Path=Age}" Width="50"/>
-                        <Image Source="{Binding Path=Picture}" Width="50"/>
+                        <TextBlock Text="{Binding Path=Name}" Width="100"/>
+                        <TextBlock Text="{Binding Path=Age}" Width="150"/>
+                        <Image Source="{Binding Path=Picture}" Width="150"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -50,6 +50,8 @@
             <ProgressBar x:Name="weatherDataProgressBar" Height="20"/>
             <TextBlock x:Name="weatherDataTextBlock" />
             <Button Content="CANCEL" Click="Button_Click_1"/>
+            <Button Name="addNewCatInfo" Content="Add new random cat fact!" Click="AddCatFact_Click"/>
+            <Button Name="addNewBitcoinValue" Content="Check bitcoin value" Click="AddBitcoinValue_Click"/>
         </StackPanel>
     </Grid>
 </Window>
