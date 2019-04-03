@@ -26,7 +26,12 @@ namespace Lab01
     public partial class MainWindow : Window
     {
         BackgroundWorker worker = new BackgroundWorker();
-
+        /// <summary>
+        /// Asynchronous function to increment result
+        /// <param name="number"/>
+        /// Decides how long will this method work in background *100ms
+        /// </param>
+        /// </summary>
         async Task<int> GetNumberAsync(int number)
         {
             if (number < 0)
@@ -39,7 +44,9 @@ namespace Lab01
             }
             return number;
         }
-
+        /// <summary>
+        /// Updates progress block informing about calculations progress
+        /// </summary>
         protected void UpdateProgressBlock(string text, TextBlock textBlock)
         {
             int a = 2;
@@ -59,14 +66,26 @@ namespace Lab01
             private int currentDots;
             private MainWindow sender;
 
-
+            /// <summary>
+            /// Constructor for WaitingAnimation
+            /// <param name="maxNumberOfDots">
+            /// Number of dots displayed
+            /// </param>
+            /// <param name="sender">
+            /// Interaction logic from MainWindow
+            /// </param>
+            /// </summary>
             public WaitingAnimation(int maxNumberOfDots, MainWindow sender)
             {
                 this.maxNumberOfDots = maxNumberOfDots;
                 this.sender = sender;
                 currentDots = 0;
             }
-
+            /// <summary>
+            /// Animates dots
+            /// <param name="stateInfo">
+            /// 
+            /// </param>
             public void CheckStatus(Object stateInfo)
             {
                 sender.UpdateProgressBlock(
@@ -282,7 +301,9 @@ namespace Lab01
             }
 
         }
-
+        /// <summary>
+        /// Downloads data about weather and parses it
+        /// </summary>
         private async void LoadWeatherData(object sender, RoutedEventArgs e)
         {
             string responseXML = await WeatherConnection.LoadDataAsync("London");
@@ -311,13 +332,18 @@ namespace Lab01
             if (worker.IsBusy != true)
                 worker.RunWorkerAsync();
         }
-
+        /// <summary>
+        /// Updates workers progress
+        /// </summary>
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             weatherDataProgressBar.Value = e.ProgressPercentage;
             weatherDataTextBlock.Text = e.UserState as string;
         }
 
+        /// <summary>
+        /// Tells Background Worker what to do 
+        /// </summary>
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -357,7 +383,9 @@ namespace Lab01
             }
             worker.ReportProgress(100, "Done");
         }
-
+        /// <summary>
+        /// Cancels Background Worker
+        /// </summary>
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (worker.WorkerSupportsCancellation == true)
@@ -367,29 +395,40 @@ namespace Lab01
             }
         }
 
+        /// <summary>
+        /// Adds new random cat fact from Web
+        /// </summary>
+
         private async void AddCatFact_Click(object sender, RoutedEventArgs e)
         {
             string apiUrl = "https://cat-fact.herokuapp.com/facts/random";
             string response = await APIConnection.LoadDataAsync(apiUrl);
-            WeatherDataEntry result = JSONParser.ParseJSON(response, apiUrl);
-            Items.Add(new Person()
-            {
-                Name = result.City,
-                Age = 0
-            });
+            Person result = JSONParser.ParseJSON(response, apiUrl);
+            Items.Add(result);
            
         }
+
+        /// <summary>
+        /// Adds current bitcon value
+        /// </summary>
 
         private async void AddBitcoinValue_Click(object sender, RoutedEventArgs e)
         {
             string apiUrl = "https://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d";
             string response = await APIConnection.LoadDataAsync(apiUrl);
-            WeatherDataEntry result = JSONParser.ParseJSON(response,apiUrl);
-            Items.Add(new Person()
-            {
-                Name = result.City,
-                Age = result.Temperature
-            });
+            Person result = JSONParser.ParseJSON(response,apiUrl);
+            Items.Add(result);
+
+        }
+        /// <summary>
+        /// Adds current bitcon value
+        /// </summary>
+        private async void AddRandomFoxPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            string apiUrl = "https://randomfox.ca/floof/";
+            string response = await APIConnection.LoadDataAsync(apiUrl);
+            Person result = JSONParser.ParseJSON(response, apiUrl);
+            Items.Add(result);
 
         }
     }

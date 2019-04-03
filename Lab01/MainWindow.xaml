@@ -5,24 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab01"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="800">
+        Title="MainWindow" Height="1000" Width="1200">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="939*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="340*"/>
+            <ColumnDefinition Width="260*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Margin="20" ItemsSource="{Binding Items}">
+        <ListBox Margin="10,38,0,62" ItemsSource="{Binding Items}" Grid.RowSpan="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Path=Name}" Width="100"/>
+                        <TextBlock Text="{Binding Path=Name}" Width="350"/>
                         <TextBlock Text="{Binding Path=Age}" Width="150"/>
                         <Image Source="{Binding Path=Picture}" Width="150"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Grid.Column="1" Margin="20" Orientation="Vertical">
+        <StackPanel Grid.Column="1" Margin="20" Orientation="Vertical" Grid.RowSpan="2">
             <TextBlock TextWrapping="Wrap" Text="Name"/>
             <TextBox Name ="nameTextBox" Height="23" TextWrapping="Wrap" Text="Jarosław" Margin="0,0,0,10"/>
             <TextBlock TextWrapping="Wrap" Text="Age"/>
@@ -52,6 +56,7 @@
             <Button Content="CANCEL" Click="Button_Click_1"/>
             <Button Name="addNewCatInfo" Content="Add new random cat fact!" Click="AddCatFact_Click"/>
             <Button Name="addNewBitcoinValue" Content="Check bitcoin value" Click="AddBitcoinValue_Click"/>
+            <Button Name="addNewFoxPhoto" Content="Download random fox photo" Click="AddRandomFoxPhoto_Click"/>
         </StackPanel>
     </Grid>
 </Window>
