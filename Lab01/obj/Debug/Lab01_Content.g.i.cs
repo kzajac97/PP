@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("__belchan_belfast_and_eldridge_azur_lane_drawn_by_kedama_milk__e381ed3ee43096b90b" +
-    "67fef8e2d20f3a.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("weather_model.context.tt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("weather_model.tt")]
 
 
