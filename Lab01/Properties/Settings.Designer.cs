@@ -23,42 +23,6 @@ namespace Lab01.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int Example {
-            get {
-                return ((int)(this["Example"]));
-            }
-            set {
-                this["Example"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Parametr {
-            get {
-                return ((bool)(this["Parametr"]));
-            }
-            set {
-                this["Parametr"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ASDFDASD")]
-        public string Jakkolwiek {
-            get {
-                return ((string)(this["Jakkolwiek"]));
-            }
-            set {
-                this["Jakkolwiek"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
@@ -67,6 +31,15 @@ namespace Lab01.Properties {
         public string WeatherConnectionString {
             get {
                 return ((string)(this["WeatherConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Teal")]
+        public global::System.Drawing.Color Setting {
+            get {
+                return ((global::System.Drawing.Color)(this["Setting"]));
             }
         }
     }

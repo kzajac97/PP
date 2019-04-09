@@ -12,6 +12,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("entity%20data%20modells/northwind_model.tt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("entity%20data%20modells/weather_model.context.tt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("entity%20data%20modells/weather_model.tt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/background.jpg")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("weather.mdf")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("weather_log.ldf")]
 

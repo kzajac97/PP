@@ -29,12 +29,12 @@ namespace Lab01
                 string text = (string)token.SelectToken("data.coins[0].symbol");
                 string number = (string)token.SelectToken("data.coins[0].price");
 
-                if (int.TryParse(number, System.Globalization.NumberStyles.Any ,System.Globalization.CultureInfo.InvariantCulture, out int age))
+                if (double.TryParse(number, System.Globalization.NumberStyles.Any ,System.Globalization.CultureInfo.InvariantCulture, out double age))
                 {
                     return new Person()
                     {
                         Name = text,
-                        Age = age
+                        Age = (int)age
                     };
                 }
                 else

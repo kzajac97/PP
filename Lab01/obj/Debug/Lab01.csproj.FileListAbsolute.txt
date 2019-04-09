@@ -13,3 +13,31 @@ C:\Users\Andrze Gnatowski\source\repos\Lab01\Lab01\obj\Debug\Lab01.Properties.Re
 C:\Users\Andrze Gnatowski\source\repos\Lab01\Lab01\obj\Debug\Lab01.csproj.GenerateResource.cache
 C:\Users\Andrze Gnatowski\source\repos\Lab01\Lab01\obj\Debug\Lab01.csproj.CoreCompileInputs.cache
 C:\Users\Andrze Gnatowski\source\repos\Lab01\Lab01\obj\Debug\Lab01.exe
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\Weather.mdf
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\Weather_log.ldf
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\Lab01.exe.config
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\Lab01.exe
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\Lab01.pdb
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\EntityFramework.dll
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\EntityFramework.xml
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01.csprojAssemblyReference.cache
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\MainWindow.g.cs
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\App.g.cs
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01_Content.g.cs
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01_MarkupCompile.cache
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01_MarkupCompile.lref
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\MainWindow.baml
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01.g.resources
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01.Properties.Resources.resources
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01.csproj.GenerateResource.cache
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01.csproj.CoreCompileInputs.cache
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01.csproj.CopyComplete
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01.exe
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\Lab01.pdb
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\Resources\background.jpg

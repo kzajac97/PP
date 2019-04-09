@@ -84,6 +84,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="APIConnection.cs" />
+    <Compile Include="Bitcoin.cs" />
+    <Compile Include="Fox.cs" />
     <Compile Include="JSONParser.cs" />
     <Compile Include="Entity Data Modells\Alphabetical_list_of_product.cs">
       <DependentUpon>Northwind_Model.tt</DependentUpon>
@@ -318,6 +320,9 @@
       <DependentUpon>Weather_Model.edmx</DependentUpon>
       <LastGenOutput>Weather_Model.cs</LastGenOutput>
     </Content>
+    <Content Include="Resources\background.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Weather.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -329,8 +334,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
