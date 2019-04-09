@@ -527,22 +527,22 @@ namespace Lab01
         {
             switch (ColorSettingComboBox.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
             {
-                case "RED":
+                case "Red":
                     Properties.Settings.Default.BackgroundColor = System.Windows.Media.Color.FromRgb(255, 0, 0);
                     Properties.Settings.Default.Save();                  
                     break;
-                case "BLUE":
-                    BackgroundColor = System.Windows.Media.Color.FromRgb(0, 0, 255);
+                case "Blue":
+                    Properties.Settings.Default.BackgroundColor = System.Windows.Media.Color.FromRgb(0, 0, 255);
+                    Properties.Settings.Default.Save();
                     break;
-                case "GREEN":
-                    BackgroundColor = System.Windows.Media.Color.FromRgb(0, 255, 0);
+                case "Green":
+                    Properties.Settings.Default.BackgroundColor = System.Windows.Media.Color.FromRgb(0, 255, 0);
+                    Properties.Settings.Default.Save();
                     break;
-                case "YELLOW":
-
-                    break;
-                default:
-                    BackgroundColor = System.Windows.Media.Color.FromRgb(249,215,28);
-                    break;
+                case "Yellow":
+                    Properties.Settings.Default.BackgroundColor = System.Windows.Media.Color.FromRgb(249, 215, 28);
+                    Properties.Settings.Default.Save();
+                    break;              
             }
         }
     }
