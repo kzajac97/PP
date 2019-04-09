@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -27,11 +28,19 @@ namespace Lab01
             {
                 string text = (string)token.SelectToken("data.coins[0].symbol");
                 string number = (string)token.SelectToken("data.coins[0].price");
-                return new Person()
+
+                if (int.TryParse(number, System.Globalization.NumberStyles.Any ,System.Globalization.CultureInfo.InvariantCulture, out int age))
                 {
-                    Name = text,
-                    Age = int.Parse(number, System.Globalization.CultureInfo.InvariantCulture)
-                };
+                    return new Person()
+                    {
+                        Name = text,
+                        Age = age
+                    };
+                }
+                else
+                {
+                    throw new Exception("JSON Parser Failed");
+                }
             }
 
             else if (apiUrl == apiList[2])
@@ -40,16 +49,23 @@ namespace Lab01
                 BitmapImage img = new BitmapImage();
                 using (WebClient client = new WebClient())
                 {
-                    byte[] pic = client.DownloadData(image);
+                    try
+                    {
+                        byte[] pic = client.DownloadData(image);
 
 
-                    MemoryStream strmImg = new MemoryStream(pic);
-                    BitmapImage myBitmapImage = new BitmapImage();
-                    myBitmapImage.BeginInit();
-                    myBitmapImage.StreamSource = strmImg;
-                    myBitmapImage.DecodePixelWidth = 200;
-                    myBitmapImage.EndInit();
-                    img = myBitmapImage;
+                        MemoryStream strmImg = new MemoryStream(pic);
+                        BitmapImage myBitmapImage = new BitmapImage();
+                        myBitmapImage.BeginInit();
+                        myBitmapImage.StreamSource = strmImg;
+                        myBitmapImage.DecodePixelWidth = 200;
+                        myBitmapImage.EndInit();
+                        img = myBitmapImage;
+                    }
+                    catch
+                    {
+                        throw new WebException("JSON Parser Failed");
+                    }
                 }
                 return new Person()
                 {

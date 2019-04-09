@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Andrze Gnatowski\source\repos\Lab05\Lab01\Entity Data Modells\Weather_Model.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\Entity Data Modells\Weather_Model.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

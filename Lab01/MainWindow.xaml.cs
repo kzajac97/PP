@@ -169,10 +169,8 @@ namespace Lab01
             worker.DoWork += Worker_DoWork;
             worker.ProgressChanged += Worker_ProgressChanged;
 
-            weatherEntryViewSource = 
-                ((System.Windows.Data.CollectionViewSource)(this.FindResource("weatherEntryViewSource")));
-            weatherEntitiesViewSource = 
-                ((System.Windows.Data.CollectionViewSource)(this.FindResource("weatherEntitiesViewSource")));
+            weatherEntryViewSource = (CollectionViewSource)FindResource("weatherEntryViewSource");
+            weatherEntitiesViewSource = (CollectionViewSource)FindResource("weatherEntitiesViewSource");
 
             RunPeriodically(OnTick, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5)).ContinueWith(task => { }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -182,10 +180,10 @@ namespace Lab01
             db.WeatherEntries.Local.Concat(db.WeatherEntries.ToList());
             weatherEntryViewSource.Source = db.WeatherEntries.Local;
             weatherEntitiesViewSource.Source = db.WeatherEntries.Local;
-            System.Windows.Data.CollectionViewSource personViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("personViewSource")));
+            CollectionViewSource personViewSource = (CollectionViewSource)(FindResource("personViewSource"));
             // Load data by setting the CollectionViewSource.Source property:
             // personViewSource.Source = [generic data source]
-            System.Windows.Data.CollectionViewSource productViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("productViewSource")));
+            CollectionViewSource productViewSource = ((CollectionViewSource)FindResource("productViewSource"));
             // Load data by setting the CollectionViewSource.Source property:
             // productViewSource.Source = [generic data source]
         }
@@ -315,31 +313,39 @@ namespace Lab01
         {
             try
             {
-                int finalNumber = int.Parse(this.finalNumberTextBox.Text);
-                var getResultTask = GetNumberAsync(finalNumber);
-                var waitingAnimationTask =
-                    new System.Threading.Timer(
-                        new WaitingAnimation(10, this).CheckStatus,
-                        null,
-                        TimeSpan.FromMilliseconds(0),
-                        TimeSpan.FromMilliseconds(500)
-                    );
-                var waitingAnimationTask2 = new System.Timers.Timer(100);
-                waitingAnimationTask2.Elapsed +=
-                    (innerSender, innerE) => {
-                        this.UpdateProgressBlock(
-                            innerE.SignalTime.ToLongTimeString(),
-                            this.progressTextBlock2);
-                    };
-                waitingAnimationTask2.Disposed +=
-                    (innerSender, innerE) => {
-                        this.progressTextBlock2.Text = "Koniec świata";
-                    };
-                waitingAnimationTask2.Start();
-                int result = await getResultTask;
-                waitingAnimationTask.Dispose();
-                waitingAnimationTask2.Dispose();
-                this.progressTextBlock.Text = "Obtained result: " + result;
+                if (int.TryParse(finalNumberTextBox.Text, out int finalNumber))
+                {
+                    var getResultTask = GetNumberAsync(finalNumber);
+                    var waitingAnimationTask =
+                        new System.Threading.Timer(
+                            new WaitingAnimation(10, this).CheckStatus,
+                            null,
+                            TimeSpan.FromMilliseconds(0),
+                            TimeSpan.FromMilliseconds(500)
+                        );
+                    var waitingAnimationTask2 = new System.Timers.Timer(100);
+                    waitingAnimationTask2.Elapsed +=
+                        (innerSender, innerE) =>
+                        {
+                            this.UpdateProgressBlock(
+                                innerE.SignalTime.ToLongTimeString(),
+                                this.progressTextBlock2);
+                        };
+                    waitingAnimationTask2.Disposed +=
+                        (innerSender, innerE) =>
+                        {
+                            this.progressTextBlock2.Text = "Koniec świata";
+                        };
+                    waitingAnimationTask2.Start();
+                    int result = await getResultTask;
+                    waitingAnimationTask.Dispose();
+                    waitingAnimationTask2.Dispose();
+                    this.progressTextBlock.Text = "Obtained result: " + result;
+                }
+                else
+                {
+                    MessageBox.Show("Error! Value must be an integer!");
+                }
             }
             catch (Exception ex)
             {
@@ -436,9 +442,15 @@ namespace Lab01
         {
             string apiUrl = "https://cat-fact.herokuapp.com/facts/random";
             string response = await APIConnection.LoadDataAsync(apiUrl);
-            Person result = JSONParser.ParseJSON(response, apiUrl);
-            Items.Add(result);
-
+            try
+            {
+                Person result = JSONParser.ParseJSON(response, apiUrl);
+                Items.Add(result);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         /// <summary>
@@ -448,9 +460,15 @@ namespace Lab01
         {
             string apiUrl = "https://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d";
             string response = await APIConnection.LoadDataAsync(apiUrl);
-            Person result = JSONParser.ParseJSON(response, apiUrl);
-            Items.Add(result);
-
+            try
+            {
+                Person result = JSONParser.ParseJSON(response, apiUrl);
+                Items.Add(result);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         /// <summary>
         /// Adds current bitcon value
@@ -459,9 +477,15 @@ namespace Lab01
         {
             string apiUrl = "https://randomfox.ca/floof/";
             string response = await APIConnection.LoadDataAsync(apiUrl);
-            Person result = JSONParser.ParseJSON(response, apiUrl);
-            Items.Add(result);
-
+            try
+            {
+                Person result = JSONParser.ParseJSON(response, apiUrl);
+                Items.Add(result);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }         
         }
     }
 }

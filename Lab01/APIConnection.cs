@@ -15,10 +15,15 @@ namespace Lab01
             using (HttpResponseMessage response = await client.GetAsync(apiUrl))
             using (HttpContent content = response.Content)
             {
-                result = content.ReadAsStringAsync();
+                try
+                {
+                    result = content.ReadAsStringAsync();
+                }
+                catch
+                {
+                    throw new Exception("API Connection Failed");
+                }
             }
-
-
             return await result;
         }
     }
