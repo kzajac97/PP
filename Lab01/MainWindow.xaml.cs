@@ -22,6 +22,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Drawing;
 
 namespace Lab01
 {
@@ -85,29 +86,29 @@ namespace Lab01
                 currentDots = 0;
             }
 
-            //public void CheckStatus(Object stateInfo)
-            //{
-            //    sender.UpdateProgressBlock(
-            //        "Processing" +
-            //        new Func<string>(() =>
-            //        {
-            //            StringBuilder strBuilder = new StringBuilder(string.Empty);
-            //            for (int i = 0; i < currentDots; i++)
-            //                strBuilder.Append(".");
-            //            return strBuilder.ToString();
-            //        })(), sender.progressTextBlock
-            //    );
-            //    if (currentDots == maxNumberOfDots)
-            //        currentDots = 0;
-            //    else
-            //        currentDots++;
-            //}
+            public void CheckStatus(Object stateInfo)
+            {
+                sender.UpdateProgressBlock(
+                    "Processing" +
+                    new Func<string>(() =>
+                    {
+                        StringBuilder strBuilder = new StringBuilder(string.Empty);
+                        for (int i = 0; i < currentDots; i++)
+                            strBuilder.Append(".");
+                        return strBuilder.ToString();
+                    })(), sender.progressTextBlock
+                );
+                if (currentDots == maxNumberOfDots)
+                    currentDots = 0;
+                else
+                    currentDots++;
+            }
         }
         /// <summary>
         /// path to person image file
         /// </summary>
         string imagePath;
-
+        
         /// <summary>
         /// observable collection displayed in MainWindow
         /// </summary>
@@ -129,6 +130,8 @@ namespace Lab01
         public static HttpClient Client => client;
         private readonly static HttpClient client = new HttpClient();
 
+        public System.Windows.Media.Color BackgroundColor = Properties.Settings.Default.BackgroundColor;
+        
         public void AddPerson(Person person)
         {
             Application.Current.Dispatcher.Invoke(() => { Items.Add(person); });
@@ -153,9 +156,10 @@ namespace Lab01
             }
         }
 
-        //Entity_Data_Modells.WeatherEntities db = new Entity_Data_Modells.WeatherEntities();
-        //System.Windows.Data.CollectionViewSource weatherEntryViewSource;
-        //System.Windows.Data.CollectionViewSource weatherEntitiesViewSource;
+        Entity_Data_Modells.WeatherEntities db = new Entity_Data_Modells.WeatherEntities();
+        System.Windows.Data.CollectionViewSource weatherEntryViewSource;
+        System.Windows.Data.CollectionViewSource weatherEntitiesViewSource;
+        private bool ColorSettingHandle;
 
         /// <summary>
         /// Adds new person from web every 5 seconds
@@ -165,23 +169,33 @@ namespace Lab01
             InitializeComponent();
             DataContext = this;
 
-            //worker.WorkerReportsProgress = true;
-            //worker.WorkerSupportsCancellation = true;
-            //worker.DoWork += Worker_DoWork;
-            //worker.ProgressChanged += Worker_ProgressChanged;
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+            worker.DoWork += Worker_DoWork;
+            worker.ProgressChanged += Worker_ProgressChanged;
 
-            //weatherEntryViewSource = (CollectionViewSource)FindResource("weatherEntryViewSource");
-            //weatherEntitiesViewSource = (CollectionViewSource)FindResource("weatherEntitiesViewSource");
+            weatherEntryViewSource = (CollectionViewSource)FindResource("weatherEntryViewSource");
+            weatherEntitiesViewSource = (CollectionViewSource)FindResource("weatherEntitiesViewSource");
+
+            IdLabel.Background = new SolidColorBrush(BackgroundColor);
+            CityLabel.Background = new SolidColorBrush(BackgroundColor);
+            TemperatureLabel.Background = new SolidColorBrush(BackgroundColor);
+            PeopleLabel.Background = new SolidColorBrush(BackgroundColor);
+            PhotosLabel.Background = new SolidColorBrush(BackgroundColor);
+            WeatherLabel.Background = new SolidColorBrush(BackgroundColor);
+
+            Debug.WriteLine("Bckg val");
+            Debug.WriteLine(BackgroundColor);
 
             RunPeriodically(OnTick, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5)).ContinueWith(task => { }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        //private void Window_Loaded(object sender, RoutedEventArgs e)
-        //{
-            //db.WeatherEntries.Local.Concat(db.WeatherEntries.ToList());
-            //weatherEntryViewSource.Source = db.WeatherEntries.Local;
-            //weatherEntitiesViewSource.Source = db.WeatherEntries.Local;
-        //}
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            db.WeatherEntries.Local.Concat(db.WeatherEntries.ToList());
+            weatherEntryViewSource.Source = db.WeatherEntries.Local;
+            weatherEntitiesViewSource.Source = db.WeatherEntries.Local;
+        }
 
         /// <summary>
         /// Adds New person to observable collection using HttpClient
@@ -289,162 +303,162 @@ namespace Lab01
         /// </summary>
         private void OnTick() => AddNewPersonFromWeb();
 
-        //private void Button_Click_3(object sender, RoutedEventArgs e)
-        //{
-        //    if (int.TryParse(idTextBox.Text, out int id) && double.TryParse(temperatureTextBox.Text, out double temperature))
-        //    {
-        //        var newEntry = new Entity_Data_Modells.WeatherEntry()
-        //        {
-        //            Id = id,
-        //            City = cityTextBox.Text,
-        //            Temperature = temperature
-        //        };
-        //        db.WeatherEntries.Local.Add(newEntry);
-        //        try
-        //        {
-        //            db.SaveChanges();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            db.WeatherEntries.Local.Remove(newEntry);
-        //            Debug.WriteLine("Error, id is not unique!");
-        //        }
-        //    }
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(idTextBox.Text, out int id) && double.TryParse(temperatureTextBox.Text, out double temperature))
+            {
+                var newEntry = new Entity_Data_Modells.WeatherEntry()
+                {
+                    Id = id,
+                    City = cityTextBox.Text,
+                    Temperature = temperature
+                };
+                db.WeatherEntries.Local.Add(newEntry);
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    db.WeatherEntries.Local.Remove(newEntry);
+                    MessageBox.Show("Error, id is not unique!");
+                }
+            }
 
-        //    else
-        //    {
-        //        MessageBox.Show("Incorrect Data");
-        //    }
-        //}
+            else
+            {
+                MessageBox.Show("Incorrect Data");
+            }
+        }
 
-        //private async void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (int.TryParse(finalNumberTextBox.Text, out int finalNumber))
-        //        {
-        //            var getResultTask = GetNumberAsync(finalNumber);
-        //            var waitingAnimationTask =
-        //                new System.Threading.Timer(
-        //                    new WaitingAnimation(10, this).CheckStatus,
-        //                    null,
-        //                    TimeSpan.FromMilliseconds(0),
-        //                    TimeSpan.FromMilliseconds(500)
-        //                );
-        //            var waitingAnimationTask2 = new System.Timers.Timer(100);
-        //            waitingAnimationTask2.Elapsed +=
-        //                (innerSender, innerE) =>
-        //                {
-        //                    this.UpdateProgressBlock(
-        //                        innerE.SignalTime.ToLongTimeString(),
-        //                        this.progressTextBlock2);
-        //                };
-        //            waitingAnimationTask2.Disposed +=
-        //                (innerSender, innerE) =>
-        //                {
-        //                    this.progressTextBlock2.Text = "Koniec świata";
-        //                };
-        //            waitingAnimationTask2.Start();
-        //            int result = await getResultTask;
-        //            waitingAnimationTask.Dispose();
-        //            waitingAnimationTask2.Dispose();
-        //            this.progressTextBlock.Text = "Obtained result: " + result;
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Error! Value must be an integer!");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        this.progressTextBlock.Text = "Error! " + ex.Message;
-        //    }
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (int.TryParse(nameTextBox.Text, out int finalNumber))
+                {
+                    var getResultTask = GetNumberAsync(finalNumber);
+                    var waitingAnimationTask =
+                        new System.Threading.Timer(
+                            new WaitingAnimation(10, this).CheckStatus,
+                            null,
+                            TimeSpan.FromMilliseconds(0),
+                            TimeSpan.FromMilliseconds(500)
+                        );
+                    var waitingAnimationTask2 = new System.Timers.Timer(100);
+                    waitingAnimationTask2.Elapsed +=
+                        (innerSender, innerE) =>
+                        {
+                            this.UpdateProgressBlock(
+                                innerE.SignalTime.ToLongTimeString(),
+                                this.progressTextBlock2);
+                        };
+                    waitingAnimationTask2.Disposed +=
+                        (innerSender, innerE) =>
+                        {
+                            this.progressTextBlock2.Text = "Koniec świata";
+                        };
+                    waitingAnimationTask2.Start();
+                    int result = await getResultTask;
+                    waitingAnimationTask.Dispose();
+                    waitingAnimationTask2.Dispose();
+                    this.progressTextBlock.Text = "Obtained result: " + result;
+                }
+                else
+                {
+                    MessageBox.Show("Error! Value must be an integer!");
+                }
+            }
+            catch (Exception ex)
+            {
+                this.progressTextBlock.Text = "Error! " + ex.Message;
+            }
 
-        //}
+        }
 
-        //private async void LoadWeatherData(object sender, RoutedEventArgs e)
-        //{
-        //    string responseXML = await WeatherConnection.LoadDataAsync("London");
-        //    WeatherDataEntry result;
+        private async void LoadWeatherData(object sender, RoutedEventArgs e)
+        {
+            string responseXML = await WeatherConnection.LoadDataAsync("London");
+            WeatherDataEntry result;
 
-        //    using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(responseXML)))
-        //    {
-        //        result = ParseWeather_XmlReader.Parse(stream);
-        //        Items.Add(new Person()
-        //        {
-        //            Name = "StreamParser: " + result.City,
-        //            Age = (int)Math.Round(result.Temperature)
-        //        });
-        //    }
+            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(responseXML)))
+            {
+                result = ParseWeather_XmlReader.Parse(stream);
+                Items.Add(new Person()
+                {
+                    Name = "StreamParser: " + result.City,
+                    Age = (int)Math.Round(result.Temperature)
+                });
+            }
 
-        //    using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(responseXML)))
-        //    {
-        //        result = ParseWeather_LINQ.Parse(stream);
-        //        Items.Add(new Person()
-        //        {
-        //            Name = "Linq: " + result.City,
-        //            Age = (int)Math.Round(result.Temperature)
-        //        });
-        //    }
+            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(responseXML)))
+            {
+                result = ParseWeather_LINQ.Parse(stream);
+                Items.Add(new Person()
+                {
+                    Name = "Linq: " + result.City,
+                    Age = (int)Math.Round(result.Temperature)
+                });
+            }
 
-        //    if (worker.IsBusy != true)
-        //        worker.RunWorkerAsync();
-        //}
+            if (worker.IsBusy != true)
+                worker.RunWorkerAsync();
+        }
 
-        //private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        //{
-        //    weatherDataProgressBar.Value = e.ProgressPercentage;
-        //    weatherDataTextBlock.Text = e.UserState as string;
-        //}
+        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            weatherDataProgressBar.Value = e.ProgressPercentage;
+            weatherDataTextBlock.Text = e.UserState as string;
+        }
 
-        //private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        //{
-        //    BackgroundWorker worker = sender as BackgroundWorker;
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
 
-        //    List<string> cities = new List<string> {
-        //        "London", "Warsaw", "Paris", "London", "Warsaw" };
-        //    for (int i = 1; i <= cities.Count; i++)
-        //    {
-        //        string city = cities[i - 1];
+            List<string> cities = new List<string> {
+                "London", "Warsaw", "Paris", "London", "Warsaw" };
+            for (int i = 1; i <= cities.Count; i++)
+            {
+                string city = cities[i - 1];
 
-        //        if (worker.CancellationPending == true)
-        //        {
-        //            worker.ReportProgress(0, "Cancelled");
-        //            e.Cancel = true;
-        //            return;
-        //        }
-        //        else
-        //        {
-        //            worker.ReportProgress(
-        //                (int)Math.Round((float)i * 100.0 / (float)cities.Count),
-        //                "Loading " + city + "...");
-        //            string responseXML = WeatherConnection.LoadDataAsync(city).Result;
-        //            WeatherDataEntry result;
+                if (worker.CancellationPending == true)
+                {
+                    worker.ReportProgress(0, "Cancelled");
+                    e.Cancel = true;
+                    return;
+                }
+                else
+                {
+                    worker.ReportProgress(
+                        (int)Math.Round((float)i * 100.0 / (float)cities.Count),
+                        "Loading " + city + "...");
+                    string responseXML = WeatherConnection.LoadDataAsync(city).Result;
+                    WeatherDataEntry result;
 
-        //            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(responseXML)))
-        //            {
-        //                result = ParseWeather_XmlReader.Parse(stream);
-        //                AddPerson(
-        //                    new Person()
-        //                    {
-        //                        Name = "StreamParser: " + result.City,
-        //                        Age = (int)Math.Round(result.Temperature)
-        //                    });
-        //            }
-        //            Thread.Sleep(2000);
-        //        }
-        //    }
-        //    worker.ReportProgress(100, "Done");
-        //}
+                    using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(responseXML)))
+                    {
+                        result = ParseWeather_XmlReader.Parse(stream);
+                        AddPerson(
+                            new Person()
+                            {
+                                Name = "StreamParser: " + result.City,
+                                Age = (int)Math.Round(result.Temperature)
+                            });
+                    }
+                    Thread.Sleep(2000);
+                }
+            }
+            worker.ReportProgress(100, "Done");
+        }
 
-        //private void Button_Click_1(object sender, RoutedEventArgs e)
-        //{
-        //    if (worker.WorkerSupportsCancellation == true)
-        //    {
-        //        weatherDataTextBlock.Text = "Cancelling...";
-        //        worker.CancelAsync();
-        //    }
-        //}
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (worker.WorkerSupportsCancellation == true)
+            {
+                weatherDataTextBlock.Text = "Cancelling...";
+                worker.CancelAsync();
+            }
+        }
 
         private async void AddCatFact_Click(object sender, RoutedEventArgs e)
         {
@@ -493,6 +507,42 @@ namespace Lab01
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ColorSettingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+            ColorSettingHandle = !cmb.IsDropDownOpen;
+            HandleColorSettingComboBox();
+        }
+
+        private void ColorSettingComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            if (ColorSettingHandle) HandleColorSettingComboBox();
+            ColorSettingHandle = true;
+        }
+
+        private void HandleColorSettingComboBox()
+        {
+            switch (ColorSettingComboBox.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
+            {
+                case "RED":
+                    Properties.Settings.Default.BackgroundColor = System.Windows.Media.Color.FromRgb(255, 0, 0);
+                    Properties.Settings.Default.Save();                  
+                    break;
+                case "BLUE":
+                    BackgroundColor = System.Windows.Media.Color.FromRgb(0, 0, 255);
+                    break;
+                case "GREEN":
+                    BackgroundColor = System.Windows.Media.Color.FromRgb(0, 255, 0);
+                    break;
+                case "YELLOW":
+
+                    break;
+                default:
+                    BackgroundColor = System.Windows.Media.Color.FromRgb(249,215,28);
+                    break;
             }
         }
     }

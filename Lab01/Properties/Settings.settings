@@ -10,8 +10,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Weather.mdf;Integrated Security=True</Value>
     </Setting>
-    <Setting Name="Setting" Type="System.Drawing.Color" Scope="Application">
-      <Value Profile="(Default)">Teal</Value>
+    <Setting Name="BackgroundColor" Type="System.Windows.Media.Color" Scope="User">
+      <Value Profile="(Default)">#FF4EE8D3</Value>
     </Setting>
   </Settings>
 </SettingsFile>

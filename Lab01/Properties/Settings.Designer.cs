@@ -34,12 +34,15 @@ namespace Lab01.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Teal")]
-        public global::System.Drawing.Color Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("#FF4EE8D3")]
+        public global::System.Windows.Media.Color BackgroundColor {
             get {
-                return ((global::System.Drawing.Color)(this["Setting"]));
+                return ((global::System.Windows.Media.Color)(this["BackgroundColor"]));
+            }
+            set {
+                this["BackgroundColor"] = value;
             }
         }
     }

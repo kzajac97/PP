@@ -74,6 +74,6 @@ namespace Lab01
             }
 
             else return new Person();
-        }
+        }      
     }
 }

@@ -1,12 +1,24 @@
-﻿<Window x:Class="Lab01.MainWindow"
+<Window x:Class="Lab01.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab01"
+        xmlns:Entity_Data_Modells="clr-namespace:Lab01.Entity_Data_Modells"
         mc:Ignorable="d"
         Title="MainWindow" 
-        WindowState="Maximized" Width="1920" Height="1080">
+        WindowState="Maximized" Width="1920" Height="1080" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="magicalButton">
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+        <CollectionViewSource x:Key="weatherEntryViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity_Data_Modells:WeatherEntry}, CreateList=True}"/>
+        <CollectionViewSource x:Key="weatherEntitiesViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity_Data_Modells:WeatherEntities}, CreateList=True}"/>
+        <CollectionViewSource x:Key="weatherEntitiesWeatherEntriesViewSource" Source="{Binding WeatherEntries, Source={StaticResource weatherEntitiesViewSource}}"/>
+        <CollectionViewSource x:Key="personViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Person}, CreateList=True}"/>
+        <CollectionViewSource x:Key="productViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity_Data_Modells:Product}, CreateList=True}"/>
+    </Window.Resources>
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="Resources/background.jpg" Stretch="UniformToFill"/>
@@ -20,9 +32,9 @@
             <ColumnDefinition Width="640"/>
             <ColumnDefinition Width="640"/>
         </Grid.ColumnDefinitions>
-        <Label Content="PEOPLE" Grid.Column="0" Height="40" VerticalAlignment="Top" FontFamily="Consolas" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
-        <Label Content="PHOTOS" Grid.Column="1" Height="40" VerticalAlignment="Top" FontFamily="Consolas" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
-        <Label Content="WEATHER" Grid.Column="2" Height="40" VerticalAlignment="Top" FontFamily="Consolas" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Name="PeopleLabel" Width="640" Content="PEOPLE" Grid.Column="0" Height="40" VerticalAlignment="Top" FontFamily="Consolas" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Name="PhotosLabel" Width="640" Content="PHOTOS" Grid.Column="1" Height="40" VerticalAlignment="Top" FontFamily="Consolas" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Name="WeatherLabel" Width="640" Content="WEATHER" Grid.Column="2" Height="40" VerticalAlignment="Top" FontFamily="Consolas" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
             <TextBox Name = "nameTextBox" Height="24" TextWrapping="Wrap" Text="Name" HorizontalAlignment="Center" Margin="40,0,0,00" Width="240"/>
             <TextBox Name = "ageTextBox" Height="24" Width="240" TextWrapping="Wrap" Text="0" HorizontalAlignment="Center" Margin="40,0,0,0"/>
@@ -47,10 +59,62 @@
             <Button Name = "addNewPhoto" Content="Add photo" Click="AddNewPhoto_Click" Margin="0,0,0,10" Width="320"/>
             <Button Name="addNewFoxPhoto" Content="Download random fox photo" Margin="0,0,0,10" Click="AddRandomFoxPhoto_Click" Width="320"/>
             <Button Name="addNewCatInfo" Content="Add new random cat fact!" Margin="0,0,0,10" Click="AddCatFact_Click" Width="320"/>
-            <Button Name="addNewBitcoinValue" Content="Check bitcoin value" Click="AddBitcoinValue_Click" Width="320"/>
+            <Button Name="addNewBitcoinValue" Content="Check bitcoin value" Margin="0,0,0,10" Click="AddBitcoinValue_Click" Width="320"/>
+            <ComboBox Name="ColorSettingComboBox" SelectionChanged="ColorSettingComboBox_SelectionChanged" DropDownClosed="ColorSettingComboBox_DropDownClosed" Width="320">
+                <ComboBoxItem> Red </ComboBoxItem>
+                <ComboBoxItem> Blue </ComboBoxItem>
+                <ComboBoxItem> Green </ComboBoxItem>
+                <ComboBoxItem> Yellow </ComboBoxItem>
+            </ComboBox>
         </StackPanel>
         <StackPanel Grid.Column="2" Grid.Row="1">
-            
+            <StackPanel Grid.Column="2" Margin="20" Orientation="Vertical">
+                <Grid Height="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                </Grid>
+                <TextBlock x:Name="progressTextBlock" TextWrapping="Wrap" Text=""/>
+                <TextBlock x:Name="progressTextBlock2" TextWrapping="Wrap" Text=""/>
+                <Button x:Name="weatherDataButton" Content="Load the weather data from the known locations" Click="LoadWeatherData"/>
+                <ProgressBar x:Name="weatherDataProgressBar" Height="20"/>
+                <TextBlock x:Name="weatherDataTextBlock" />
+                <Button Content="CANCEL" Click="Button_Click_1"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="properitiesTextBlock" TextWrapping="Wrap" Text="ASD"/>
+                </StackPanel>
+            </StackPanel>
+            <Grid VerticalAlignment="Top" Margin="10,20,0,0" HorizontalAlignment="Left" DataContext="{StaticResource weatherEntryViewSource}" Grid.Column="4" Width="235" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Name="CityLabel" VerticalAlignment="Bottom" Height="24" Width="120" Grid.Row="0" HorizontalAlignment="Left" Grid.Column="0" Content="City:"/>
+                <TextBox x:Name="cityTextBox" Width="120" VerticalAlignment="Center"  Grid.Row="0" Margin="0,0,10,10" Height="24" HorizontalAlignment="Left" Grid.Column="1" Grid.RowSpan="2"/>
+                <Label Name="IdLabel" VerticalAlignment="Center" Height="24" Width="120" Grid.Row="2" Margin="0,0,10,10" HorizontalAlignment="Left" Grid.Column="0" Content="Id:"/>
+                <TextBox x:Name="idTextBox" Width="120" VerticalAlignment="Center"  Grid.Row="2" Margin="0,0,10,10" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <Label Name="TemperatureLabel" VerticalAlignment="Center" Height="24" Width="120" Grid.Row="3" Margin="0,0,10,10" HorizontalAlignment="Left" Grid.Column="0" Content="Temperature:"/>
+                <TextBox x:Name="temperatureTextBox" Width="120" VerticalAlignment="Center"  Grid.Row="3" Margin="0,0,10,10" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+            </Grid>
+            <Button Content="Add to Database" Grid.Column="4" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click_3"/>
+            <DataGrid x:Name="weatherEntryDataGrid" Width ="600" HorizontalAlignment="Left" AutoGenerateColumns="False" Grid.Column="4" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource weatherEntryViewSource}}" Margin="10,10,0,0" RowDetailsVisibilityMode="VisibleWhenSelected">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="cityColumn1" Binding="{Binding City}" Header="City" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="idColumn1" Binding="{Binding Id}" Header="Id" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="temperatureColumn1" Binding="{Binding Temperature}" Header="Temperature" Width="SizeToHeader"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
     </Grid>
 </Window>

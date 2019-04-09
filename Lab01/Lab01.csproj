@@ -84,8 +84,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="APIConnection.cs" />
-    <Compile Include="Bitcoin.cs" />
-    <Compile Include="Fox.cs" />
     <Compile Include="JSONParser.cs" />
     <Compile Include="Entity Data Modells\Alphabetical_list_of_product.cs">
       <DependentUpon>Northwind_Model.tt</DependentUpon>
