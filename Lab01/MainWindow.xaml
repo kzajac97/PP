@@ -4,9 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab01"
-        mc:Ignorable="d"
+        xmlns:Entity_Data_Modells="clr-namespace:Lab01.Entity_Data_Modells" 
+    mc:Ignorable="d"
         Title="MainWindow" Height="1000" Width="1200">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="magicalButton">
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+        <CollectionViewSource x:Key="weatherEntryViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity_Data_Modells:WeatherEntry}, CreateList=True}"/>
+        <CollectionViewSource x:Key="weatherEntitiesViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity_Data_Modells:WeatherEntities}, CreateList=True}"/>
+        <CollectionViewSource x:Key="weatherEntitiesWeatherEntriesViewSource" Source="{Binding WeatherEntries, Source={StaticResource weatherEntitiesViewSource}}"/>
+        <CollectionViewSource x:Key="personViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Person}, CreateList=True}"/>
+        <CollectionViewSource x:Key="productViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity_Data_Modells:Product}, CreateList=True}"/>
+    </Window.Resources>
     <Grid>
+        <Grid.DataContext>
+            <StaticResource ResourceKey="weatherEntitiesWeatherEntriesViewSource"/>
+        </Grid.DataContext>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
             <RowDefinition Height="939*"/>
@@ -57,6 +72,31 @@
             <Button Name="addNewCatInfo" Content="Add new random cat fact!" Click="AddCatFact_Click"/>
             <Button Name="addNewBitcoinValue" Content="Check bitcoin value" Click="AddBitcoinValue_Click"/>
             <Button Name="addNewFoxPhoto" Content="Download random fox photo" Click="AddRandomFoxPhoto_Click"/>
+            <Grid x:Name="grid1" VerticalAlignment="Top" Margin="10,20,0,0" HorizontalAlignment="Left" DataContext="{StaticResource weatherEntryViewSource}" Grid.Column="4" Width="235">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label VerticalAlignment="Center" Grid.Row="0" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="City:" Grid.RowSpan="2"/>
+                <TextBox x:Name="cityTextBox" Width="120" VerticalAlignment="Center"  Grid.Row="0" Margin="3,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1" Grid.RowSpan="2"/>
+                <Label VerticalAlignment="Center" Grid.Row="2" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Id:"/>
+                <TextBox x:Name="idTextBox" Width="120" VerticalAlignment="Center"  Grid.Row="2" Margin="3,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <Label VerticalAlignment="Center" Grid.Row="3" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Temperature:"/>
+                <TextBox x:Name="temperatureTextBox" Width="120" VerticalAlignment="Center"  Grid.Row="3" Margin="3,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+            </Grid>
+            <DataGrid x:Name="weatherEntryDataGrid" AutoGenerateColumns="False" Grid.Column="4" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource weatherEntryViewSource}}" Margin="10,167,10,279" RowDetailsVisibilityMode="VisibleWhenSelected">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="cityColumn1" Binding="{Binding City}" Header="City" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="idColumn1" Binding="{Binding Id}" Header="Id" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="temperatureColumn1" Binding="{Binding Temperature}" Header="Temperature" Width="SizeToHeader"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
     </Grid>
 </Window>

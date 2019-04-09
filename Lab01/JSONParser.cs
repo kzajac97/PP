@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Windows.Media.Imaging;
@@ -15,7 +15,7 @@ namespace Lab01
 
         public static Person ParseJSON(string result, string apiUrl)
         {
-            
+
             JToken token = JObject.Parse(result);
             if (apiUrl == apiList[0])
             {
@@ -30,7 +30,7 @@ namespace Lab01
                 return new Person()
                 {
                     Name = text,
-                    Age = float.Parse(number, System.Globalization.CultureInfo.InvariantCulture)
+                    Age = int.Parse(number, System.Globalization.CultureInfo.InvariantCulture)
                 };
             }
 
@@ -41,15 +41,15 @@ namespace Lab01
                 using (WebClient client = new WebClient())
                 {
                     byte[] pic = client.DownloadData(image);
-                
 
-                MemoryStream strmImg = new MemoryStream(pic);
-                BitmapImage myBitmapImage = new BitmapImage();
-                myBitmapImage.BeginInit();
-                myBitmapImage.StreamSource = strmImg;
-                myBitmapImage.DecodePixelWidth = 200;
-                myBitmapImage.EndInit();
-                img = myBitmapImage;
+
+                    MemoryStream strmImg = new MemoryStream(pic);
+                    BitmapImage myBitmapImage = new BitmapImage();
+                    myBitmapImage.BeginInit();
+                    myBitmapImage.StreamSource = strmImg;
+                    myBitmapImage.DecodePixelWidth = 200;
+                    myBitmapImage.EndInit();
+                    img = myBitmapImage;
                 }
                 return new Person()
                 {

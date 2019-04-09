@@ -22,5 +22,52 @@ namespace Lab01.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Example {
+            get {
+                return ((int)(this["Example"]));
+            }
+            set {
+                this["Example"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Parametr {
+            get {
+                return ((bool)(this["Parametr"]));
+            }
+            set {
+                this["Parametr"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ASDFDASD")]
+        public string Jakkolwiek {
+            get {
+                return ((string)(this["Jakkolwiek"]));
+            }
+            set {
+                this["Jakkolwiek"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\Weather.mdf;I" +
+            "ntegrated Security=True")]
+        public string WeatherConnectionString {
+            get {
+                return ((string)(this["WeatherConnectionString"]));
+            }
+        }
     }
 }

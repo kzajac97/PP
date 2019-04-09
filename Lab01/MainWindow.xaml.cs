@@ -1,28 +1,30 @@
 using Microsoft.Win32;
 using System;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Linq;
-using System.Timers;
-using System.Windows.Interop;
-using System.Drawing;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace Lab01
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         BackgroundWorker worker = new BackgroundWorker();
@@ -57,8 +59,9 @@ namespace Lab01
                     textBlock.Text = text + a.ToString();
                 });
             }
-            catch { }
+            catch { } 
         }
+
 
         class WaitingAnimation
         {
@@ -81,15 +84,11 @@ namespace Lab01
                 this.sender = sender;
                 currentDots = 0;
             }
-            /// <summary>
-            /// Animates dots
-            /// <param name="stateInfo">
-            /// 
-            /// </param>
+
             public void CheckStatus(Object stateInfo)
             {
                 sender.UpdateProgressBlock(
-                    "Processing" +
+                    "Processing" + 
                     new Func<string>(() => {
                         StringBuilder strBuilder = new StringBuilder(string.Empty);
                         for (int i = 0; i < currentDots; i++)
@@ -111,12 +110,16 @@ namespace Lab01
         /// <summary>
         /// observable collection displayed in MainWindow
         /// </summary>
-        public ObservableCollection<Person> Items => people;
-        static ObservableCollection<Person> people = new ObservableCollection<Person>
+        ObservableCollection<Person> people = new ObservableCollection<Person>
         {
             new Person { Name = "P1", Age = 1 },
             new Person { Name = "P2", Age = 2 }
         };
+
+        public ObservableCollection<Person> Items
+        {
+            get => people;
+        }
 
         /// <summary>
         /// static HttpClient field used not to create
@@ -131,18 +134,60 @@ namespace Lab01
         }
 
         /// <summary>
+        /// Event for AddNewPersonButton
+        /// Adds new person with user's input data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddNewPersonButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(ageTextBox.Text, out int age))
+            {
+                people.Add(new Person { Age = age, Name = nameTextBox.Text, Picture = (BitmapImage)photoPreview.Source });
+            }
+
+            else
+            {
+                MessageBox.Show("Age must be a number");
+            }
+        }
+
+        Entity_Data_Modells.WeatherEntities db = new Entity_Data_Modells.WeatherEntities();
+        System.Windows.Data.CollectionViewSource weatherEntryViewSource;
+        System.Windows.Data.CollectionViewSource weatherEntitiesViewSource;
+
+        /// <summary>
         /// Adds new person from web every 5 seconds
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
+
             worker.WorkerReportsProgress = true;
             worker.WorkerSupportsCancellation = true;
             worker.DoWork += Worker_DoWork;
             worker.ProgressChanged += Worker_ProgressChanged;
 
+            weatherEntryViewSource = 
+                ((System.Windows.Data.CollectionViewSource)(this.FindResource("weatherEntryViewSource")));
+            weatherEntitiesViewSource = 
+                ((System.Windows.Data.CollectionViewSource)(this.FindResource("weatherEntitiesViewSource")));
+
             RunPeriodically(OnTick, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5)).ContinueWith(task => { }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            db.WeatherEntries.Local.Concat(db.WeatherEntries.ToList());
+            weatherEntryViewSource.Source = db.WeatherEntries.Local;
+            weatherEntitiesViewSource.Source = db.WeatherEntries.Local;
+            System.Windows.Data.CollectionViewSource personViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("personViewSource")));
+            // Load data by setting the CollectionViewSource.Source property:
+            // personViewSource.Source = [generic data source]
+            System.Windows.Data.CollectionViewSource productViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("productViewSource")));
+            // Load data by setting the CollectionViewSource.Source property:
+            // productViewSource.Source = [generic data source]
         }
 
         /// <summary>
@@ -152,13 +197,13 @@ namespace Lab01
         private async void AddNewPersonFromWeb()
         {
             try
-            {        
+            {
                 string result = await Client.GetStringAsync("https://pl.wikipedia.org/wiki/Specjalna:Losowa_strona");
 
                 string name = Regex.Match(result, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;
-                name = name.Replace(" – Wikipedia, wolna encyklopedia", "");
+                name = name.Replace(" ï¿½ Wikipedia, wolna encyklopedia", "");
                 string ageString = Regex.Match(result, "[0-9]+").Value;
-                
+
                 if (int.TryParse(ageString, out int age))
                 {
                     people.Add(new Person { Age = age, Name = name });
@@ -181,25 +226,6 @@ namespace Lab01
                 {
                     MessageBox.Show("Unkown Exception caught");
                 }
-            }
-        }
-
-        /// <summary>
-        /// Event for AddNewPersonButton
-        /// Adds new person with user's input data
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AddNewPersonButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (int.TryParse(ageTextBox.Text, out int age))
-            {
-                people.Add(new Person { Age = age, Name = nameTextBox.Text, Picture = (BitmapImage) photoPreview.Source});
-            }
-
-            else
-            {
-                MessageBox.Show("Age must be a number");
             }
         }
 
@@ -244,16 +270,16 @@ namespace Lab01
         /// </returns>
         private async Task RunPeriodically(Action OnTick, TimeSpan dueTime, TimeSpan interval)
         {
-            if(dueTime > TimeSpan.Zero)
+            if (dueTime > TimeSpan.Zero)
             {
                 await Task.Delay(dueTime);
             }
 
-            while(true)
+            while (true)
             {
                 OnTick?.Invoke();
 
-                if(interval > TimeSpan.Zero)
+                if (interval > TimeSpan.Zero)
                 {
                     await Task.Delay(interval);
                 }
@@ -264,6 +290,26 @@ namespace Lab01
         /// Adds new Person from web when called 
         /// </summary>
         private void OnTick() => AddNewPersonFromWeb();
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var newEntry = new Entity_Data_Modells.WeatherEntry()
+            {
+                Id = int.Parse(idTextBox.Text),
+                City = cityTextBox.Text,
+                Temperature = double.Parse(temperatureTextBox.Text)
+            };
+            db.WeatherEntries.Local.Add(newEntry);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                db.WeatherEntries.Local.Remove(newEntry);
+                Debug.WriteLine("Error, id is not unique!");
+            }
+        }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -287,7 +333,7 @@ namespace Lab01
                     };
                 waitingAnimationTask2.Disposed +=
                     (innerSender, innerE) => {
-                        this.progressTextBlock2.Text = "Koniec œwiata";
+                        this.progressTextBlock2.Text = "Koniec Å›wiata";
                     };
                 waitingAnimationTask2.Start();
                 int result = await getResultTask;
@@ -301,9 +347,7 @@ namespace Lab01
             }
 
         }
-        /// <summary>
-        /// Downloads data about weather and parses it
-        /// </summary>
+
         private async void LoadWeatherData(object sender, RoutedEventArgs e)
         {
             string responseXML = await WeatherConnection.LoadDataAsync("London");
@@ -332,18 +376,13 @@ namespace Lab01
             if (worker.IsBusy != true)
                 worker.RunWorkerAsync();
         }
-        /// <summary>
-        /// Updates workers progress
-        /// </summary>
+
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             weatherDataProgressBar.Value = e.ProgressPercentage;
             weatherDataTextBlock.Text = e.UserState as string;
         }
 
-        /// <summary>
-        /// Tells Background Worker what to do 
-        /// </summary>
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -383,9 +422,7 @@ namespace Lab01
             }
             worker.ReportProgress(100, "Done");
         }
-        /// <summary>
-        /// Cancels Background Worker
-        /// </summary>
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (worker.WorkerSupportsCancellation == true)
@@ -394,29 +431,24 @@ namespace Lab01
                 worker.CancelAsync();
             }
         }
-
-        /// <summary>
-        /// Adds new random cat fact from Web
-        /// </summary>
-
+       
         private async void AddCatFact_Click(object sender, RoutedEventArgs e)
         {
             string apiUrl = "https://cat-fact.herokuapp.com/facts/random";
             string response = await APIConnection.LoadDataAsync(apiUrl);
             Person result = JSONParser.ParseJSON(response, apiUrl);
             Items.Add(result);
-           
+
         }
 
         /// <summary>
         /// Adds current bitcon value
         /// </summary>
-
         private async void AddBitcoinValue_Click(object sender, RoutedEventArgs e)
         {
             string apiUrl = "https://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d";
             string response = await APIConnection.LoadDataAsync(apiUrl);
-            Person result = JSONParser.ParseJSON(response,apiUrl);
+            Person result = JSONParser.ParseJSON(response, apiUrl);
             Items.Add(result);
 
         }
