@@ -24,5 +24,18 @@ namespace Lab01
             }
             return await result;
         }
+
+        public static async Task<string> LoadForecastAsync(string cityName)
+        {
+            string apiCall = apiBaseUrl + "?q=" + cityName + "&apikey=" + apiKey;
+            Task<string> result;
+            using (HttpClient client = new HttpClient())
+            using (HttpResponseMessage response = await client.GetAsync(apiCall))
+            using (HttpContent content = response.Content)
+            {
+                result = content.ReadAsStringAsync();
+            }
+            return await result;
+        }
     }
 }

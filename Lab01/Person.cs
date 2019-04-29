@@ -12,6 +12,11 @@ namespace Lab01
     {
         public string Name { get; set; }
         public int Age { get; set; }
-        public BitmapImage Picture { get; set; }
+        public BitmapImage Picture { get; set; } = new BitmapImage(new Uri(@"Resources\pudzian.jpg", UriKind.Relative));
+
+
     }
+
+
+
 }

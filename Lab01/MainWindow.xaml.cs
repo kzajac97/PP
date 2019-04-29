@@ -23,6 +23,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Drawing;
+using OxyPlot;
+using OxyPlot.Series;
+using MaterialSkin;
 
 namespace Lab01
 {
@@ -114,9 +117,16 @@ namespace Lab01
         /// </summary>
         ObservableCollection<Person> people = new ObservableCollection<Person>
         {
-            new Person { Name = "P1", Age = 1 },
-            new Person { Name = "P2", Age = 2 }
+            new Person { Name = "P1", Age = 1},
+            new Person { Name = "P2", Age = 2}
         };
+
+        
+        
+
+        
+        int counter = 1;
+
 
         public ObservableCollection<Person> Items
         {
@@ -161,6 +171,10 @@ namespace Lab01
         System.Windows.Data.CollectionViewSource weatherEntitiesViewSource;
         private bool ColorSettingHandle;
 
+
+        public IList<DataPoint> dataPoints = new List<DataPoint>();
+        public PlotModel DataPlot { get; set; }
+        
         /// <summary>
         /// Adds new person from web every 5 seconds
         /// </summary>
@@ -173,6 +187,16 @@ namespace Lab01
             worker.WorkerSupportsCancellation = true;
             worker.DoWork += Worker_DoWork;
             worker.ProgressChanged += Worker_ProgressChanged;
+
+
+            //////////////
+            
+            DataPlot = new PlotModel();
+            DataPlot.Series.Add(new LineSeries());
+            LoadDataForPlot("https://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d");
+
+
+
 
             weatherEntryViewSource = (CollectionViewSource)FindResource("weatherEntryViewSource");
             weatherEntitiesViewSource = (CollectionViewSource)FindResource("weatherEntitiesViewSource");
@@ -208,7 +232,7 @@ namespace Lab01
                 string result = await Client.GetStringAsync("https://pl.wikipedia.org/wiki/Specjalna:Losowa_strona");
 
                 string name = Regex.Match(result, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;
-                name = name.Replace(" � Wikipedia, wolna encyklopedia", "");
+                name = name.Replace(" – Wikipedia, wolna encyklopedia", "");
                 string ageString = Regex.Match(result, "[0-9]+").Value;
 
                 if (int.TryParse(ageString, out int age))
@@ -444,6 +468,9 @@ namespace Lab01
                                 Name = "StreamParser: " + result.City,
                                 Age = (int)Math.Round(result.Temperature)
                             });
+
+                        dataPoints.Add(new DataPoint(++counter, result.Temperature));
+                        
                     }
                     Thread.Sleep(2000);
                 }
@@ -462,7 +489,7 @@ namespace Lab01
 
         private async void AddCatFact_Click(object sender, RoutedEventArgs e)
         {
-            string apiUrl = "https://cat-fact.herokuapp.com/facts/random";
+            string apiUrl = "https://catfact.ninja/fact?max_length=140";
             string response = await APIConnection.LoadDataAsync(apiUrl);
             try
             {
@@ -480,10 +507,12 @@ namespace Lab01
         ///</summary>
         private async void AddBitcoinValue_Click(object sender, RoutedEventArgs e)
         {
-            string apiUrl = "https://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d";
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            string apiUrl = "http://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d";
             string response = await APIConnection.LoadDataAsync(apiUrl);
             try
             {
+                dataPoints = JSONParser.ParseJSONForPlot(response);
                 Person result = JSONParser.ParseJSON(response, apiUrl);
                 Items.Add(result);
             }
@@ -493,7 +522,7 @@ namespace Lab01
             }
         }
         /// <summary>
-        /// Adds current bitcon value
+        /// Adds random fox photo
         /// </summary>
         private async void AddRandomFoxPhoto_Click(object sender, RoutedEventArgs e)
         {
@@ -508,6 +537,25 @@ namespace Lab01
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private async void LoadDataForPlot(string apiUrl)
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            string response = await APIConnection.LoadDataAsync(apiUrl);
+            List<DataPoint> values = JSONParser.ParseJSONForPlot(response);
+            DataPlot.Title = "Wartość BTC w ostatnich dniach";
+            DataPlot.DefaultXAxis.Title = "Dzień";
+            DataPlot.DefaultYAxis.Title = "Wartość";
+            for (int i = 0; i < values.Count; i++)
+            {
+
+                (DataPlot.Series[0] as LineSeries).Points.Add(new DataPoint(values[i].X, values[i].Y));
+
+               
+            }
+            DataPlot.InvalidatePlot(true);
+
         }
 
         private void ColorSettingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

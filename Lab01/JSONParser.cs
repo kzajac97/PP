@@ -4,6 +4,10 @@ using System.IO;
 using System.Net;
 using System.Windows.Media.Imaging;
 using Newtonsoft.Json.Linq;
+using OxyPlot;
+using System.Windows.Documents;
+using System.Threading.Tasks;
+
 namespace Lab01
 {
     public class JSONParser
@@ -12,7 +16,26 @@ namespace Lab01
         public int number;
 
         public static List<string> apiList = new List<string> {
-                "https://cat-fact.herokuapp.com/facts/random", "https://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d", "https://randomfox.ca/floof/" };
+                "https://catfact.ninja/fact?max_length=140", "http://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d", "https://randomfox.ca/floof/" };
+
+        public static List<DataPoint> ParseJSONForPlot(string result)
+        {
+            JToken token = JObject.Parse(result);
+            List < DataPoint > prices = new List<DataPoint> { };
+            double x, y;
+            string myToken;
+            for (int i = 0; i < 10; i++)
+            {
+                myToken = "data.coins[0].history[" + i + "]";
+                x = i;
+                y = (double)token.SelectToken(myToken);
+                prices.Add(new DataPoint(x, y));
+            }
+
+            return prices;
+
+        }
+
 
         public static Person ParseJSON(string result, string apiUrl)
         {
@@ -20,8 +43,8 @@ namespace Lab01
             JToken token = JObject.Parse(result);
             if (apiUrl == apiList[0])
             {
-                string text = (string)token.SelectToken("text");
-                return new Person() { Name = text };
+                string text = (string)token.SelectToken("fact");
+                return new Person() { Name = text, Picture = new BitmapImage(new Uri(@"Resources\cat.jpg", UriKind.Relative)) };
             }
 
             else if (apiUrl == apiList[1])
