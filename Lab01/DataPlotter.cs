@@ -7,6 +7,9 @@ using OxyPlot;
 
 namespace Lab01
 {
+    /// <summary>
+    /// Class responsible for plotting data using OxyPlot library
+    /// </summary>
     public class PlotData
     {
         List<DataPoint> dataPoints;

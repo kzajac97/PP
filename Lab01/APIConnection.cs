@@ -4,8 +4,18 @@ using System.Threading.Tasks;
 
 namespace Lab01
 {
+    /// <summary>
+    /// Class responsible for Loading Data from APIs
+    /// </summary>
     public class APIConnection
     {
+        /// <summary>
+        /// Loads data from given url
+        /// </summary>
+        /// <param name="apiUrl">
+        /// API url
+        /// </param>
+        /// <returns></returns>
         public static async Task<string> LoadDataAsync(string apiUrl)
         {
             Task<string> result;

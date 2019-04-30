@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Lab01
 {
+    /// <summary>
+    /// Class for Parsing json files
+    /// </summary>
     public class JSONParser
     {
         public string text;
@@ -18,6 +21,16 @@ namespace Lab01
         public static List<string> apiList = new List<string> {
                 "https://catfact.ninja/fact?max_length=140", "http://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d", "https://randomfox.ca/floof/" };
 
+        /// <summary>
+        /// Parses Data from JSON to OxyPlot DataPoints
+        /// to create a plot in wpf window
+        /// </summary>
+        /// <param name="result">
+        /// api string
+        /// </param>
+        /// <returns>
+        /// List of DataPoints holding X and Y values of plot
+        /// </returns>
         public static List<DataPoint> ParseJSONForPlot(string result)
         {
             JToken token = JObject.Parse(result);
@@ -36,7 +49,12 @@ namespace Lab01
 
         }
 
-
+        /// <summary>
+        /// Parses Person from JSON files
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="apiUrl"></param>
+        /// <returns></returns>
         public static Person ParseJSON(string result, string apiUrl)
         {
             JToken token = JObject.Parse(result);

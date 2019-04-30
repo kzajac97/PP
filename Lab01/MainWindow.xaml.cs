@@ -50,6 +50,7 @@ namespace Lab01
             }
             return number;
         }
+
         /// <summary>
         /// Updates progress block informing about calculations progress
         /// </summary>
@@ -161,12 +162,17 @@ namespace Lab01
             }
         }
 
+        /// <summary>
+        /// Code block loading database 
+        /// </summary>
         Entity_Data_Modells.WeatherEntities db = new Entity_Data_Modells.WeatherEntities();
         System.Windows.Data.CollectionViewSource weatherEntryViewSource;
         System.Windows.Data.CollectionViewSource weatherEntitiesViewSource;
         private bool ColorSettingHandle;
-
-
+        
+        /// <summary>
+        /// Creates data structures for plot 
+        /// </summary>
         public IList<DataPoint> dataPoints = new List<DataPoint>();
         public PlotModel DataPlot { get; set; }
         
@@ -182,30 +188,31 @@ namespace Lab01
             worker.WorkerSupportsCancellation = true;
             worker.DoWork += Worker_DoWork;
             worker.ProgressChanged += Worker_ProgressChanged;
-
-
-            //////////////
             
+            // Plotting
             DataPlot = new PlotModel();
             DataPlot.Series.Add(new LineSeries());
             LoadDataForPlot("https://api.coinranking.com/v1/public/coins?base=PLN&timePeriod=7d");
-
+            
+            // Loading data from database
             weatherEntryViewSource = (CollectionViewSource)FindResource("weatherEntryViewSource");
             weatherEntitiesViewSource = (CollectionViewSource)FindResource("weatherEntitiesViewSource");
-
+            // Set Backgroud Color to labels loaded from settings
             IdLabel.Background = new SolidColorBrush(BackgroundColor);
             CityLabel.Background = new SolidColorBrush(BackgroundColor);
             TemperatureLabel.Background = new SolidColorBrush(BackgroundColor);
             PeopleLabel.Background = new SolidColorBrush(BackgroundColor);
             PhotosLabel.Background = new SolidColorBrush(BackgroundColor);
             WeatherLabel.Background = new SolidColorBrush(BackgroundColor);
-
-            Debug.WriteLine("Bckg val");
-            Debug.WriteLine(BackgroundColor);
-
+            // Add new person every 5 seconds
             RunPeriodically(OnTick, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5)).ContinueWith(task => { }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        /// <summary>
+        /// Sets datasources when window is loaded
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             db.WeatherEntries.Local.Concat(db.WeatherEntries.ToList());
@@ -513,6 +520,7 @@ namespace Lab01
                 MessageBox.Show(ex.Message);
             }
         }
+
         /// <summary>
         /// Adds random fox photo
         /// </summary>
@@ -548,6 +556,11 @@ namespace Lab01
 
         }
 
+        /// <summary>
+        /// Utility method for comobobox selection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ColorSettingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cmb = sender as ComboBox;
@@ -555,12 +568,20 @@ namespace Lab01
             HandleColorSettingComboBox();
         }
 
+        /// <summary>
+        /// Utility method for comobobox selection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ColorSettingComboBox_DropDownClosed(object sender, EventArgs e)
         {
             if (ColorSettingHandle) HandleColorSettingComboBox();
             ColorSettingHandle = true;
         }
 
+        /// <summary>
+        /// Updates Settings values of background color via combobox selection
+        /// </summary>
         private void HandleColorSettingComboBox()
         {
             switch (ColorSettingComboBox.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())

@@ -8,6 +8,9 @@ using System.Windows.Media.Imaging;
 
 namespace Lab01
 {
+    /// <summary>
+    /// Class holding person data
+    /// </summary>
     public class Person
     {
         public string Name { get; set; }
