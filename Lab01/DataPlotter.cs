@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ using OxyPlot;
 
 namespace Lab01
 {
-    class PlotData
+    public class PlotData
     {
         List<DataPoint> dataPoints;
 

@@ -28,9 +28,6 @@
         <CollectionViewSource x:Key="productViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity_Data_Modells:Product}, CreateList=True}"/>
     </Window.Resources>
     <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Resources/background.jpg" Stretch="UniformToFill"/>
-        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="1400"/>

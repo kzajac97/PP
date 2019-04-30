@@ -2,14 +2,12 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-
 namespace Lab01
 {
-    class APIConnection
+    public class APIConnection
     {
         public static async Task<string> LoadDataAsync(string apiUrl)
         {
-
             Task<string> result;
             using (HttpClient client = new HttpClient())
             using (HttpResponseMessage response = await client.GetAsync(apiUrl))
@@ -19,9 +17,10 @@ namespace Lab01
                 {
                     result = content.ReadAsStringAsync();
                 }
+
                 catch
                 {
-                    throw new Exception("API Connection Failed");
+                    throw new HttpRequestException("Api Conncection Failed");
                 }
             }
             return await result;

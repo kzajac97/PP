@@ -39,7 +39,6 @@ namespace Lab01
 
         public static Person ParseJSON(string result, string apiUrl)
         {
-
             JToken token = JObject.Parse(result);
             if (apiUrl == apiList[0])
             {
@@ -52,7 +51,7 @@ namespace Lab01
                 string text = (string)token.SelectToken("data.coins[0].symbol");
                 string number = (string)token.SelectToken("data.coins[0].price");
 
-                if (double.TryParse(number, System.Globalization.NumberStyles.Any ,System.Globalization.CultureInfo.InvariantCulture, out double age))
+                if (double.TryParse(number, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double age))
                 {
                     return new Person()
                     {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lab01
 {
-    class WeatherConnection
+    public class WeatherConnection
     {
         static string apiKey = "1b6714e500f0cdd864a8b49ec6ac5e45";
         static string apiBaseUrl = "https://api.openweathermap.org/data/2.5/weather";

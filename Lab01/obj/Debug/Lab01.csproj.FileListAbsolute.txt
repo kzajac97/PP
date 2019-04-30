@@ -112,3 +112,15 @@ E:\Michal Biblioteki\Dokumenty\PWr\Net_java\PP\Lab01\bin\Debug\MaterialSkin.dll
 E:\Michal Biblioteki\Dokumenty\PWr\Net_java\PP\Lab01\bin\Debug\MaterialDesignThemes.Wpf.pdb
 E:\Michal Biblioteki\Dokumenty\PWr\Net_java\PP\Lab01\bin\Debug\MaterialDesignThemes.Wpf.xml
 E:\Michal Biblioteki\Dokumenty\PWr\Net_java\PP\Lab01\obj\Debug\App.baml
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\MaterialDesignColors.dll
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\MaterialSkin.dll
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\OxyPlot.dll
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\OxyPlot.Wpf.dll
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\OxyPlot.pdb
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\OxyPlot.xml
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\OxyPlot.Wpf.pdb
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\bin\Debug\OxyPlot.Wpf.xml
+C:\Users\Krzysiek\Documents\GitHub\PP\Lab01\obj\Debug\App.baml
